@@ -4,14 +4,17 @@ import pl.edu.uj.okulo.log.OkLogger;
 
 public class SensorDescription {
 
+	public static final String SENSOR_CONFIG_SEPARATOR = ":";
+	
 	private String name = "";
 	private short vendorId = 0;
 	private short productId = 0;
+	private int dpi = 0;
 	
 	public SensorDescription(String config)
 	{
-		String[] s = config.split(":");
-		if(s.length<3)
+		String[] s = config.split(SensorDescription.SENSOR_CONFIG_SEPARATOR);
+		if(s.length<4)
 		{
 			OkLogger.warn("Wrong sensor's description ["+config+"]");
 			return;
@@ -19,13 +22,15 @@ public class SensorDescription {
 		name = s[0];
 		vendorId = Short.parseShort(s[1]);
 		productId = Short.parseShort(s[2]);
+		dpi = Integer.parseInt(s[3]);
 	}
 	
-	public SensorDescription(String name, short vendorId, short productId)
+	public SensorDescription(String name, short vendorId, short productId, int dpi)
 	{
 		this.name = name;
 		this.vendorId = vendorId;
 		this.productId = productId;
+		this.dpi = dpi;
 	}
 	
 	public short getVendor()
@@ -46,5 +51,9 @@ public class SensorDescription {
 	public String toString()
 	{
 		return "Name: "+name+", vendorId: "+vendorId+", productId: "+productId;
+	}
+
+	public Integer getDpi() {
+		return dpi;
 	}
 }	

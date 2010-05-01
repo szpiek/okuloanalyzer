@@ -2,7 +2,6 @@ package pl.edu.uj.okulo.engine;
 
 import javax.usb.UsbDisconnectedException;
 import javax.usb.UsbInterface;
-import javax.usb.UsbPort;
 
 import pl.edu.uj.okulo.log.OkLogger;
 import pl.edu.uj.okulo.windows.StatusPanel;
