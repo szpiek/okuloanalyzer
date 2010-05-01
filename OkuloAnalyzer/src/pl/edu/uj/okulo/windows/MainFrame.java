@@ -15,10 +15,10 @@ public class MainFrame extends JFrame {
 
 	private static final long serialVersionUID = 1L;
 	private int width = 350;
-	private int height = 250;
+	private int height = 300;
 
-	private int left = 100;
-	private int top = 100;
+	private static int left = 100;
+	private static int top = 100;
 	
 	public MainFrame()
 	{
@@ -47,6 +47,10 @@ public class MainFrame extends JFrame {
         this.setLocation(new Point(left, top));      
         this.setSize(width, height);
         this.setResizable(false);
-        
+	}
+	
+	public static Point getLocationPoint()
+	{
+		return new Point(left,top);
 	}
 }
