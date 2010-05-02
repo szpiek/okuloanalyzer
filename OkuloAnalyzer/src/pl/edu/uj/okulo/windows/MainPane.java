@@ -117,6 +117,7 @@ public class MainPane extends JPanel implements ActionListener{
 		if(e.getActionCommand().equals(MainPane.FIND_SENSORS_ACTION))
 		{
 			progress.setIndeterminate(true);
+			sensors.setEnabled(false);
 			Thread t = new Thread(
 					new Runnable()
 					{
@@ -133,30 +134,44 @@ public class MainPane extends JPanel implements ActionListener{
 								OkLogger.info(e1.getMessage());
 								found = -1;
 							}
-							actionFinished(found);
+							finally
+							{
+								sensors.setEnabled(true);
+							}
+							found(found);
 						}
 					});
 			t.start();
 		}
 		else if(e.getActionCommand().equals(MainPane.DISCONNECT_SENSORS))
 		{
-			try {
-				Engine.getInstance().disconnectSensors();
-			} catch (UsbClaimException e1) {
-				Utilities.showErrorInformation(mainFrame, "Wystapił błąd podczas odłączania sensorów. ["+e1.getMessage()+"]", "Błąd");
-			} catch (UsbNotActiveException e1) {
-				Utilities.showErrorInformation(mainFrame, "Wystapił błąd podczas odłączania sensorów. ["+e1.getMessage()+"]", "Błąd");
-			} catch (UsbDisconnectedException e1) {
-				Utilities.showErrorInformation(mainFrame, "Wystapił błąd podczas odłączania sensorów. ["+e1.getMessage()+"]", "Błąd");
-			} catch (UsbException e1) {
-				Utilities.showErrorInformation(mainFrame, "Wystapił błąd podczas odłączania sensorów. ["+e1.getMessage()+"]", "Błąd");
-			}
-			finally
-			{
-				this.sensorsList.setEnabled(true);
-				this.sensors.setText(MainPane.FIND_SENSORS_BUTTON);
-				this.sensors.setActionCommand(FIND_SENSORS_ACTION);
-			}
+			sensors.setEnabled(false);
+			progress.setIndeterminate(true);
+			Thread t = new Thread(new Runnable(){
+				public void run()
+				{
+					try {
+						Engine.getInstance().disconnectSensors();
+					} catch (UsbClaimException e1) {
+						Utilities.showErrorInformation(mainFrame, "Wystapił błąd podczas odłączania sensorów. ["+e1.getMessage()+"]", "Błąd");
+					} catch (UsbNotActiveException e1) {
+						Utilities.showErrorInformation(mainFrame, "Wystapił błąd podczas odłączania sensorów. ["+e1.getMessage()+"]", "Błąd");
+					} catch (UsbDisconnectedException e1) {
+						Utilities.showErrorInformation(mainFrame, "Wystapił błąd podczas odłączania sensorów. ["+e1.getMessage()+"]", "Błąd");
+					} catch (UsbException e1) {
+						Utilities.showErrorInformation(mainFrame, "Wystapił błąd podczas odłączania sensorów. ["+e1.getMessage()+"]", "Błąd");
+					}
+					finally
+					{
+						sensorsList.setEnabled(true);
+						progress.setIndeterminate(false);
+						sensors.setEnabled(true);
+					}
+					sensors.setText(MainPane.FIND_SENSORS_BUTTON);
+					sensors.setActionCommand(FIND_SENSORS_ACTION);
+				}
+			});
+			t.start();
 		}
 		else if(e.getActionCommand().equals(MainPane.REMOVE_SENSOR_ACTION))
 		{
@@ -195,17 +210,17 @@ public class MainPane extends JPanel implements ActionListener{
 		}
 	}
 	
-	private void actionFinished(int found)
+	private void found(int found)
 	{
 		OkLogger.info("Finished");
 		this.progress.setIndeterminate(false);
 		if(found>0)
 		{
+			Engine.getInstance().runSensors(this.sensorsPane1.getStatusStan(), this.sensorsPane1.getStatusOdczyt());
 			this.sensorsList.setEnabled(false);
 			this.sensors.setText("Odłącz sensory");
 			this.sensors.setActionCommand(DISCONNECT_SENSORS);
 			JOptionPane.showMessageDialog(this.mainFrame, "Znaleziono sensory.");
-			Engine.getInstance().runSensors(this.sensorsPane1.getStatusStan(), this.sensorsPane1.getStatusOdczyt());
 		}
 		else if (found<0)
 			Utilities.showErrorInformation(this.mainFrame, "Wystapił błąd podczas szukania sensorów.", "Błąd");	
