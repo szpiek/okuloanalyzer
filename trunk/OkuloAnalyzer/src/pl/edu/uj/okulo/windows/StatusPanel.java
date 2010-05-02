@@ -18,10 +18,24 @@ public class StatusPanel extends JPanel {
 
 	public void setGreen() {
 		this.c = Color.GREEN;
+		this.repaint();
+	}
+	
+	public void setBlack()
+	{
+		this.c = Color.black;
+		this.repaint();
+	}
+	
+	public void setDarkGreen()
+	{
+		this.c = new Color(0,128,0);
+		this.repaint();
 	}
 	
 	public void setRed()
 	{
 		this.c = Color.red;
+		this.repaint();
 	}
 }
