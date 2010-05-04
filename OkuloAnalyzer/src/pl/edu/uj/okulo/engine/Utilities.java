@@ -5,7 +5,7 @@ import javax.swing.JOptionPane;
 
 public class Utilities {
 
-	public static boolean checkIfIsInt(String number)
+	public static boolean isInt(String number)
 	{
 		try
 		{
@@ -17,6 +17,19 @@ public class Utilities {
 			return false;
 		}
 	}
+	
+	public static boolean isDouble(String number)
+	{
+		try
+		{
+			Double.parseDouble(number);
+			return true;
+		}
+		catch(NumberFormatException e)
+		{
+			return false;
+		}
+	}	
 	
 	public static void showErrorInformation(JFrame parent, String message, String title)
 	{
