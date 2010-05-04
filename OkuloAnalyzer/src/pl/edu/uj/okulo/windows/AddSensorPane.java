@@ -9,7 +9,6 @@ import java.awt.event.ActionListener;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 
-import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
@@ -24,9 +23,6 @@ public class AddSensorPane extends JPanel implements ActionListener {
 	private JLabel venLabel, prodLabel, nameLabel, dpiLabel, infoLabel;
 	private JTextField venIn, prodIn, nameIn, dpiIn;
 	private AddSensorFrame parent;
-	
-	public static String ADD_ACTION = "add";
-	public static String CANCEL_ACTION = "cancel";
 	
 	public AddSensorPane(AddSensorFrame p)
 	{
@@ -74,7 +70,7 @@ public class AddSensorPane extends JPanel implements ActionListener {
 		c.gridx = 0;
 		add(dpiLabel, c);
 		
-		ControlAddingSensorPane controlPane = new ControlAddingSensorPane(this);
+		ControlPane controlPane = new ControlPane(this);
 		c.gridy = 5;
 		c.gridwidth = 2;
 		add(controlPane, c);
@@ -82,7 +78,7 @@ public class AddSensorPane extends JPanel implements ActionListener {
 
 	@Override
 	public void actionPerformed(ActionEvent ev) {
-		if(ev.getActionCommand().equals(AddSensorPane.ADD_ACTION))
+		if(ev.getActionCommand().equals(MainPane.ADD_ACTION))
 		{
 			if(checkAllInput())
 			{
@@ -109,17 +105,17 @@ public class AddSensorPane extends JPanel implements ActionListener {
 			showErrorInformation("nazwą","Nazwa sensora musi zostać podana.");
 			return false;
 		}
-		if(!Utilities.checkIfIsInt(this.venIn.getText().trim()))
+		if(!Utilities.isInt(this.venIn.getText().trim()))
 		{
 			showErrorInformation("vendor id", "Vendor id musi byc liczbą całkowitą.");
 			return false;
 		}
-		if(!Utilities.checkIfIsInt(this.prodIn.getText().trim()))
+		if(!Utilities.isInt(this.prodIn.getText().trim()))
 		{
 			showErrorInformation("product id", "Product id musi byc liczbą całkowitą.");
 			return false;
 		}
-		if(!Utilities.checkIfIsInt(this.dpiIn.getText().trim()))
+		if(!Utilities.isInt(this.dpiIn.getText().trim()))
 		{
 			showErrorInformation("DPI", "DPI musi byc liczbą całkowitą.");
 			return false;
@@ -131,25 +127,5 @@ public class AddSensorPane extends JPanel implements ActionListener {
 		Utilities.showErrorInformation(parent, "Wystapił błąd podczas sprawdzania wartośc w polu z "+name+"."
 				+System.getProperty("line.separator")
 				+message, "Błąd walidacji");
-	}
-}
-
-class ControlAddingSensorPane extends JPanel
-{
-	private static final long serialVersionUID = 1L;
-	ControlAddingSensorPane(ActionListener listener)
-	{
-		super(new GridBagLayout());
-		JButton add = new JButton("Dodaj");
-		JButton cancel = new JButton("Anuluj");
-		GridBagConstraints c = new GridBagConstraints();
-        c.insets = new Insets(3,5,3,5);
-        add.setActionCommand(AddSensorPane.ADD_ACTION);
-        cancel.setActionCommand(AddSensorPane.CANCEL_ACTION);
-        add.addActionListener(listener);
-        cancel.addActionListener(listener);
-        add(add,c);
-        c.gridx = 1;
-        add(cancel, c);
 	}
 }
