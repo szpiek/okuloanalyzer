@@ -30,7 +30,7 @@ import pl.edu.uj.okulo.log.OkLogger;
 public class MainPane extends JPanel implements ActionListener{
 
 	private static final long serialVersionUID = 1L;
-	protected JButton addSensor, removeSensor, sensors, calibration;
+	protected JButton addSensor, removeSensor, sensors, calibration, configuration;
 	protected JProgressBar progress;
 	protected JComboBox sensorsList;
 	protected JFrame mainFrame, addSensorFrame;
@@ -41,8 +41,13 @@ public class MainPane extends JPanel implements ActionListener{
 	public static final String RUN_CALIBRATION_ACTION = "calibrate";
 	public static final String ADD_SENSOR_ACTION = "addSensor";
 	public static final String REMOVE_SENSOR_ACTION = "removeSensor";
+	public static final String CONFIGURE_ACTION = "configure";
 	
 	private static final String FIND_SENSORS_BUTTON = "Znajdź sensory";
+	
+	//stale
+	public static String ADD_ACTION = "add";
+	public static String CANCEL_ACTION = "cancel";	
 	
 	public MainPane(JFrame frame)
 	{
@@ -54,10 +59,11 @@ public class MainPane extends JPanel implements ActionListener{
         calibration = this.prepareButton("Kalibruj", MainPane.RUN_CALIBRATION_ACTION);
         addSensor = this.prepareButton("Dodaj sensor", MainPane.ADD_SENSOR_ACTION);
         removeSensor = this.prepareButton("Usuń sensor", MainPane.REMOVE_SENSOR_ACTION);
+        configuration = this.prepareButton("Konfiguruj", MainPane.CONFIGURE_ACTION);
         
         sensors.addActionListener(this);
         calibration.addActionListener(this);
-         
+        configuration.addActionListener(this);
         addSensor.addActionListener(this);
         removeSensor.addActionListener(this);
         
@@ -97,12 +103,15 @@ public class MainPane extends JPanel implements ActionListener{
         c.gridy = 3;
         c.insets = new Insets(25, 5, 5, 5);
         add(calibration, c);
+        c.gridx = 1;
+        add(configuration, c);
         d = sensorsList.getPreferredSize();
         d.width = 145;
         sensorsList.setPreferredSize(d);
         c.insets = new Insets(5, 5, 5, 5);
         
         // sensors panel
+        c.gridx = 0;
         c.gridy = 4;
         c.gridheight = 2;
         sensorsPane1 = new SensorsPanel("Sensor 1");
@@ -207,6 +216,14 @@ public class MainPane extends JPanel implements ActionListener{
 				this.addSensorFrame = new AddSensorFrame(this);
 				this.addSensorFrame.setVisible(true);
 			}
+		}
+		else if(e.getActionCommand().equals(MainPane.RUN_CALIBRATION_ACTION))
+		{
+			new CalibrationFrame().setVisible(true);
+		}
+		else if(e.getActionCommand().equals(MainPane.CONFIGURE_ACTION))
+		{
+			new ConfigurationFrame().setVisible(true);
 		}
 	}
 	
