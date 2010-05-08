@@ -16,14 +16,14 @@ import javax.swing.JTextField;
 import pl.edu.uj.okulo.engine.Configuration;
 import pl.edu.uj.okulo.engine.Utilities;
 
-public class CalibrationPane extends JPanel implements ActionListener {
+public class CalibrationPanel extends JPanel implements ActionListener {
 
 	private static final long serialVersionUID = 1L;
 	private JLabel width, distance;
 	private JTextField widthIn, distanceIn;
 	private CalibrationFrame parent;
 
-	public CalibrationPane(CalibrationFrame p)
+	public CalibrationPanel(CalibrationFrame p)
 	{
 		super(new GridBagLayout());
 		this.parent = p;
@@ -49,7 +49,7 @@ public class CalibrationPane extends JPanel implements ActionListener {
         c.gridy = 2;
         c.gridwidth = 2;
         c.insets = new Insets(12, 5, 0, 5);
-        ControlPane controlPane = new ControlPane(this);
+        ControlPanel controlPane = new ControlPanel(this);
         controlPane.setAddText("Zapisz");
         add(controlPane, c);
         
@@ -63,7 +63,7 @@ public class CalibrationPane extends JPanel implements ActionListener {
 	
 	@Override
 	public void actionPerformed(ActionEvent a) {
-		if(a.getActionCommand().equals(MainPane.ADD_ACTION))
+		if(a.getActionCommand().equals(MainPanel.ADD_ACTION))
 		{
 			if(!Utilities.isDouble(this.widthIn.getText().trim()) || Double.parseDouble(this.widthIn.getText().trim())<=0)
 			{

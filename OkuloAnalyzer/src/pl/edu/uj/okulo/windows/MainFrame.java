@@ -15,7 +15,7 @@ public class MainFrame extends JFrame {
 
 	private static final long serialVersionUID = 1L;
 	private int width = 350;
-	private int height = 300;
+	private int height = 320;
 
 	private static int left = 100;
 	private static int top = 100;
@@ -38,7 +38,7 @@ public class MainFrame extends JFrame {
         	JOptionPane.showMessageDialog(this, "Błąd podczas otwierania pliku konfiguracyjnego "+Configuration.CONFIG_FILENAME+" ["+e.getMessage()+"]",
         			"Błąd", JOptionPane.ERROR_MESSAGE);
         }        
-        MainPane pane = new MainPane(this);
+        MainPanel pane = new MainPanel(this);
         pane.setOpaque(true);
         this.setContentPane(pane);
         

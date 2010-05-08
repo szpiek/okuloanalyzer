@@ -17,14 +17,14 @@ import pl.edu.uj.okulo.engine.Configuration;
 import pl.edu.uj.okulo.engine.SensorDescription;
 import pl.edu.uj.okulo.engine.Utilities;
 
-public class AddSensorPane extends JPanel implements ActionListener {
+public class AddSensorPanel extends JPanel implements ActionListener {
 
 	private static final long serialVersionUID = 1L;
 	private JLabel venLabel, prodLabel, nameLabel, dpiLabel, infoLabel;
 	private JTextField venIn, prodIn, nameIn, dpiIn;
 	private AddSensorFrame parent;
 	
-	public AddSensorPane(AddSensorFrame p)
+	public AddSensorPanel(AddSensorFrame p)
 	{
 		super(new GridBagLayout());
 		parent = p;
@@ -70,7 +70,7 @@ public class AddSensorPane extends JPanel implements ActionListener {
 		c.gridx = 0;
 		add(dpiLabel, c);
 		
-		ControlPane controlPane = new ControlPane(this);
+		ControlPanel controlPane = new ControlPanel(this);
 		c.gridy = 5;
 		c.gridwidth = 2;
 		add(controlPane, c);
@@ -78,7 +78,7 @@ public class AddSensorPane extends JPanel implements ActionListener {
 
 	@Override
 	public void actionPerformed(ActionEvent ev) {
-		if(ev.getActionCommand().equals(MainPane.ADD_ACTION))
+		if(ev.getActionCommand().equals(MainPanel.ADD_ACTION))
 		{
 			if(checkAllInput())
 			{

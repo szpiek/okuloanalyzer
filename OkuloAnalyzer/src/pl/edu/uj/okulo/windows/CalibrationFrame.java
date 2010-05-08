@@ -14,7 +14,7 @@ public class CalibrationFrame extends JFrame {
 		setResizable(false);
 		setSize(width, height);
 		setLocation(MainFrame.getLocationPoint());
-		CalibrationPane pane = new CalibrationPane(this);
+		CalibrationPanel pane = new CalibrationPanel(this);
 		setContentPane(pane);
 	}
 }
