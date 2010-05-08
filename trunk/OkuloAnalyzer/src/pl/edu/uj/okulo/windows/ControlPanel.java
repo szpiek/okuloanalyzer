@@ -8,20 +8,20 @@ import java.awt.event.ActionListener;
 import javax.swing.JButton;
 import javax.swing.JPanel;
 
-public class ControlPane extends JPanel {
+public class ControlPanel extends JPanel {
 	private static final long serialVersionUID = 1L;
 	
 	private JButton add, cancel;
 	
-	public ControlPane(ActionListener listener)
+	public ControlPanel(ActionListener listener)
 	{
 		super(new GridBagLayout());
 		add = new JButton("Dodaj");
 		cancel = new JButton("Anuluj");
 		GridBagConstraints c = new GridBagConstraints();
         c.insets = new Insets(3,5,3,5);
-        add.setActionCommand(MainPane.ADD_ACTION);
-        cancel.setActionCommand(MainPane.CANCEL_ACTION);
+        add.setActionCommand(MainPanel.ADD_ACTION);
+        cancel.setActionCommand(MainPanel.CANCEL_ACTION);
         add.addActionListener(listener);
         cancel.addActionListener(listener);
         add(add,c);

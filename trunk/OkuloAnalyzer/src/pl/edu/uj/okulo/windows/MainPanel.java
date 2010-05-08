@@ -25,14 +25,15 @@ import pl.edu.uj.okulo.engine.Configuration;
 import pl.edu.uj.okulo.engine.Engine;
 import pl.edu.uj.okulo.engine.SensorDescription;
 import pl.edu.uj.okulo.engine.Utilities;
+import pl.edu.uj.okulo.experiment.ExperimentConstants;
 import pl.edu.uj.okulo.log.OkLogger;
 
-public class MainPane extends JPanel implements ActionListener{
+public class MainPanel extends JPanel implements ActionListener{
 
 	private static final long serialVersionUID = 1L;
-	protected JButton addSensor, removeSensor, sensors, calibration, configuration;
+	protected JButton addSensor, removeSensor, sensors, calibration, configuration, experiment;
 	protected JProgressBar progress;
-	protected JComboBox sensorsList;
+	protected JComboBox sensorsList, experimentList;
 	protected JFrame mainFrame, addSensorFrame;
 	protected SensorsPanel sensorsPane1, sensorsPane2;
 	
@@ -42,6 +43,7 @@ public class MainPane extends JPanel implements ActionListener{
 	public static final String ADD_SENSOR_ACTION = "addSensor";
 	public static final String REMOVE_SENSOR_ACTION = "removeSensor";
 	public static final String CONFIGURE_ACTION = "configure";
+	public static final String EXPERIMENT_ACTION = "experiment";
 	
 	private static final String FIND_SENSORS_BUTTON = "Znajdź sensory";
 	
@@ -49,29 +51,32 @@ public class MainPane extends JPanel implements ActionListener{
 	public static String ADD_ACTION = "add";
 	public static String CANCEL_ACTION = "cancel";	
 	
-	public MainPane(JFrame frame)
+	public MainPanel(JFrame frame)
 	{
 		super(new GridBagLayout());
 		// ustawiamy przycisk do szukania sensorow
 		Dimension d = this.getPreferredSize();
 		
-        sensors = this.prepareButton(MainPane.FIND_SENSORS_BUTTON, MainPane.FIND_SENSORS_ACTION);
-        calibration = this.prepareButton("Kalibruj", MainPane.RUN_CALIBRATION_ACTION);
-        addSensor = this.prepareButton("Dodaj sensor", MainPane.ADD_SENSOR_ACTION);
-        removeSensor = this.prepareButton("Usuń sensor", MainPane.REMOVE_SENSOR_ACTION);
-        configuration = this.prepareButton("Konfiguruj", MainPane.CONFIGURE_ACTION);
+        sensors = this.prepareButton(MainPanel.FIND_SENSORS_BUTTON, MainPanel.FIND_SENSORS_ACTION);
+        calibration = this.prepareButton("Kalibruj", MainPanel.RUN_CALIBRATION_ACTION);
+        addSensor = this.prepareButton("Dodaj sensor", MainPanel.ADD_SENSOR_ACTION);
+        removeSensor = this.prepareButton("Usuń sensor", MainPanel.REMOVE_SENSOR_ACTION);
+        configuration = this.prepareButton("Konfiguruj", MainPanel.CONFIGURE_ACTION);
+        experiment = this.prepareButton("Eksperyment", MainPanel.EXPERIMENT_ACTION);
         
         sensors.addActionListener(this);
         calibration.addActionListener(this);
         configuration.addActionListener(this);
         addSensor.addActionListener(this);
         removeSensor.addActionListener(this);
+        experiment.addActionListener(this);
         
         sensors.setToolTipText("Kliknij aby szukac sensorów");
 
         progress = new JProgressBar(); 
         
         sensorsList = new JComboBox(Configuration.getConfiguration().getSensorsNames());
+        experimentList = new JComboBox(ExperimentConstants.getExperiments());
         
         this.mainFrame = frame;
         
@@ -110,9 +115,13 @@ public class MainPane extends JPanel implements ActionListener{
         sensorsList.setPreferredSize(d);
         c.insets = new Insets(5, 5, 5, 5);
         
-        // sensors panel
-        c.gridx = 0;
         c.gridy = 4;
+        add(experimentList, c);
+        c.gridx = 0;
+        add(experiment,c);
+        
+        // sensors panel
+        c.gridy = 5;
         c.gridheight = 2;
         sensorsPane1 = new SensorsPanel("Sensor 1");
         sensorsPane2 = new SensorsPanel("Sensor 2");
@@ -123,7 +132,7 @@ public class MainPane extends JPanel implements ActionListener{
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		if(e.getActionCommand().equals(MainPane.FIND_SENSORS_ACTION))
+		if(e.getActionCommand().equals(MainPanel.FIND_SENSORS_ACTION))
 		{
 			progress.setIndeterminate(true);
 			sensors.setEnabled(false);
@@ -152,7 +161,7 @@ public class MainPane extends JPanel implements ActionListener{
 					});
 			t.start();
 		}
-		else if(e.getActionCommand().equals(MainPane.DISCONNECT_SENSORS))
+		else if(e.getActionCommand().equals(MainPanel.DISCONNECT_SENSORS))
 		{
 			sensors.setEnabled(false);
 			progress.setIndeterminate(true);
@@ -176,13 +185,13 @@ public class MainPane extends JPanel implements ActionListener{
 						progress.setIndeterminate(false);
 						sensors.setEnabled(true);
 					}
-					sensors.setText(MainPane.FIND_SENSORS_BUTTON);
+					sensors.setText(MainPanel.FIND_SENSORS_BUTTON);
 					sensors.setActionCommand(FIND_SENSORS_ACTION);
 				}
 			});
 			t.start();
 		}
-		else if(e.getActionCommand().equals(MainPane.REMOVE_SENSOR_ACTION))
+		else if(e.getActionCommand().equals(MainPanel.REMOVE_SENSOR_ACTION))
 		{
 			if(this.sensorsList.getItemCount()==1)
 			{
@@ -209,7 +218,7 @@ public class MainPane extends JPanel implements ActionListener{
 			}
 		     
 		}
-		else if(e.getActionCommand().equals(MainPane.ADD_SENSOR_ACTION))
+		else if(e.getActionCommand().equals(MainPanel.ADD_SENSOR_ACTION))
 		{
 			if(this.addSensorFrame==null || !this.addSensorFrame.isVisible())
 			{
@@ -217,13 +226,17 @@ public class MainPane extends JPanel implements ActionListener{
 				this.addSensorFrame.setVisible(true);
 			}
 		}
-		else if(e.getActionCommand().equals(MainPane.RUN_CALIBRATION_ACTION))
+		else if(e.getActionCommand().equals(MainPanel.RUN_CALIBRATION_ACTION))
 		{
 			new CalibrationFrame().setVisible(true);
 		}
-		else if(e.getActionCommand().equals(MainPane.CONFIGURE_ACTION))
+		else if(e.getActionCommand().equals(MainPanel.CONFIGURE_ACTION))
 		{
 			new ConfigurationFrame().setVisible(true);
+		}
+		else if(e.getActionCommand().equals(MainPanel.EXPERIMENT_ACTION))
+		{
+			new ExperimentFrame().setVisible(true);
 		}
 	}
 	

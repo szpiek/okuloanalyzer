@@ -28,7 +28,7 @@ public class ConfigurationPane extends JPanel implements ActionListener, MouseLi
 	private JLabel backColorBack, impColorBack;
 	private ColorChooserFrame back, imp;
 	private JTextField sizeIn;
-	private ControlPane control;
+	private ControlPanel control;
 	private ConfigurationFrame parent;
 
 	public ConfigurationPane(ConfigurationFrame p)
@@ -83,7 +83,7 @@ public class ConfigurationPane extends JPanel implements ActionListener, MouseLi
 		add(impSize, c);
 		c.gridx = 1;
 		add(sizeIn, c);
-		control = new ControlPane(this);
+		control = new ControlPanel(this);
 		control.setAddAction(SAVE_ACTION);
 		control.setCancelAction(CANCEL_ACTION);
 		control.setAddText("Zapisz");
@@ -99,7 +99,7 @@ public class ConfigurationPane extends JPanel implements ActionListener, MouseLi
 	public void actionPerformed(ActionEvent a) {
 		if(back!=null)
 		{
-			if(a.getActionCommand().equals(MainPane.ADD_ACTION))
+			if(a.getActionCommand().equals(MainPanel.ADD_ACTION))
 			{
 				this.backColorBack.setBackground(back.getSelectedColor());
 			}
@@ -108,7 +108,7 @@ public class ConfigurationPane extends JPanel implements ActionListener, MouseLi
 		}
 		if(imp!=null)
 		{
-			if(a.getActionCommand().equals(MainPane.ADD_ACTION))
+			if(a.getActionCommand().equals(MainPanel.ADD_ACTION))
 			{
 				this.impColorBack.setBackground(imp.getSelectedColor());
 			}

@@ -29,7 +29,7 @@ public class ColorChooserFrame extends JFrame {
 		setContentPane(pane);
 		setSize(width, height);
 		setLocation(MainFrame.getLocationPoint());
-		ControlPane control = new ControlPane(parent);
+		ControlPanel control = new ControlPanel(parent);
 		control.setAddText("OK");
 		c.gridy = 1;
 		c.fill = GridBagConstraints.BOTH;
