@@ -10,6 +10,7 @@ import java.util.HashMap;
 import java.util.Properties;
 
 import pl.edu.uj.okulo.log.OkLogger;
+import pl.edu.uj.okulo.windows.PreviewFrame;
 
 public class Configuration {
 
@@ -28,6 +29,10 @@ public class Configuration {
 	private final String IMPSIZE_CONFIG_KEY = "impSize";
 	
 	private Properties configFile = null;
+	private int frameHeight = 0;
+	private int frameWidth = 0;
+	private final int maxImpulses = 5;
+	private final int PREVIEW_IMPULSE=30;
 	private final Color DEFAULT_COLOR_IMPULS = Color.black;
 	private final Color DEFAULT_COLOR_BACKGROUND = Color.white;
 	
@@ -104,11 +109,11 @@ public class Configuration {
 			throw new IllegalArgumentException("Config file is empty!");
 		if(configFile.containsKey(IMPCOLOR_CONFIG_KEY))
 		{
-			this.colorImpuls = new Color(Integer.parseInt((String)configFile.get(IMPCOLOR_CONFIG_KEY)));
+			this.setImpulseColor(new Color(Integer.parseInt((String)configFile.get(IMPCOLOR_CONFIG_KEY))));
 		}
 		if(configFile.containsKey(BACKCOLOR_CONFIG_KEY))
 		{
-			this.colorImpuls = new Color(Integer.parseInt((String)configFile.get(BACKCOLOR_CONFIG_KEY)));
+			this.colorBackground = new Color(Integer.parseInt((String)configFile.get(BACKCOLOR_CONFIG_KEY)));
 		}
 		return configFile;
 	}
@@ -137,20 +142,22 @@ public class Configuration {
 	{
 		if(colorImpuls==null)
 			return DEFAULT_COLOR_IMPULS;
-		return colorImpuls;
+		return this.colorImpuls;
 	}
 	
 	public Color getBackgroundColor()
 	{
 		if(colorBackground==null)
 			return DEFAULT_COLOR_BACKGROUND;
-		return colorBackground;
+		return this.colorBackground;
 	}
 	
 	public Integer getImpSize()
 	{
 		if(!configFile.containsKey(IMPSIZE_CONFIG_KEY))
 			return 3;
+		if(this.frameHeight==PreviewFrame.height)
+			return PREVIEW_IMPULSE;
 		return Integer.parseInt(configFile.getProperty(IMPSIZE_CONFIG_KEY));
 	}
 	
@@ -169,6 +176,36 @@ public class Configuration {
 	{
 		configFile.setProperty(BACKCOLOR_CONFIG_KEY, c.getRGB()+"");
 		this.colorBackground = c;
+	}
+	
+	public void setFrameHeight(int h)
+	{
+		this.frameHeight = h;
+	}
+	
+	public int getFrameHeight()
+	{
+		return this.frameHeight;
+	}
+	
+	public int getHeightPosition()
+	{
+		return (this.frameHeight/2)-getImpSize();
+	}
+	
+	public void setFrameWidth(int w)
+	{
+		this.frameWidth = w;
+	}
+	
+	public int getFrameWidth()
+	{
+		return this.frameWidth;
+	}
+	
+	public int getWidthPosition(int id)
+	{
+		return (this.frameWidth/maxImpulses)*(id-1)+getImpSize();
 	}
 	
 }

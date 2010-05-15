@@ -10,6 +10,7 @@ import javax.swing.JOptionPane;
 
 import pl.edu.uj.okulo.engine.Configuration;
 import pl.edu.uj.okulo.log.OkLogger;
+import pl.edu.uj.okulo.windows.panels.MainPanel;
 
 public class MainFrame extends JFrame {
 
