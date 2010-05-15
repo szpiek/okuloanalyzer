@@ -1,4 +1,4 @@
-package pl.edu.uj.okulo.windows;
+package pl.edu.uj.okulo.windows.panels;
 
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;

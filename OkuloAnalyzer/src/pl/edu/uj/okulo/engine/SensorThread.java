@@ -14,7 +14,7 @@ import javax.usb.UsbInterface;
 import javax.usb.UsbPipe;
 
 import pl.edu.uj.okulo.log.OkLogger;
-import pl.edu.uj.okulo.windows.StatusPanel;
+import pl.edu.uj.okulo.windows.panels.StatusPanel;
 
 public class SensorThread extends Thread {
 	

@@ -1,4 +1,4 @@
-package pl.edu.uj.okulo.windows;
+package pl.edu.uj.okulo.windows.panels;
 
 import java.awt.Dimension;
 import java.awt.GridBagConstraints;
@@ -27,6 +27,10 @@ import pl.edu.uj.okulo.engine.SensorDescription;
 import pl.edu.uj.okulo.engine.Utilities;
 import pl.edu.uj.okulo.experiment.ExperimentConstants;
 import pl.edu.uj.okulo.log.OkLogger;
+import pl.edu.uj.okulo.windows.AddSensorFrame;
+import pl.edu.uj.okulo.windows.CalibrationFrame;
+import pl.edu.uj.okulo.windows.ConfigurationFrame;
+import pl.edu.uj.okulo.windows.ExperimentFrame;
 
 public class MainPanel extends JPanel implements ActionListener{
 
@@ -34,7 +38,7 @@ public class MainPanel extends JPanel implements ActionListener{
 	protected JButton addSensor, removeSensor, sensors, calibration, configuration, experiment;
 	protected JProgressBar progress;
 	protected JComboBox sensorsList, experimentList;
-	protected JFrame mainFrame, addSensorFrame;
+	protected JFrame mainFrame, addSensorFrame, configurationFrame, experimentFrame;
 	protected SensorsPanel sensorsPane1, sensorsPane2;
 	
 	public static final String FIND_SENSORS_ACTION = "findSensors";
@@ -232,11 +236,16 @@ public class MainPanel extends JPanel implements ActionListener{
 		}
 		else if(e.getActionCommand().equals(MainPanel.CONFIGURE_ACTION))
 		{
-			new ConfigurationFrame().setVisible(true);
+			this.showConfigurationWindow();
 		}
 		else if(e.getActionCommand().equals(MainPanel.EXPERIMENT_ACTION))
 		{
-			new ExperimentFrame().setVisible(true);
+			if(experimentFrame==null)
+			{
+				experimentFrame = new ExperimentFrame();
+			}
+			experimentFrame.setVisible(true);
+			experimentFrame.toFront();
 		}
 	}
 	
@@ -265,6 +274,17 @@ public class MainPanel extends JPanel implements ActionListener{
         b.setHorizontalTextPosition(AbstractButton.LEADING);
         b.setActionCommand(action);
         return b;
+	}
+	
+	public void showConfigurationWindow()
+	{
+		if(configurationFrame!=null && configurationFrame.isVisible())
+			configurationFrame.toFront();
+		else
+		{
+			configurationFrame = new ConfigurationFrame();
+			configurationFrame.setVisible(true);
+		}
 	}
 	
 	public JComboBox getSensorsList()

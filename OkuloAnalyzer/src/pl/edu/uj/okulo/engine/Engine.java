@@ -13,7 +13,7 @@ import javax.usb.UsbNotActiveException;
 
 import pl.edu.uj.okulo.log.OkLogger;
 import pl.edu.uj.okulo.usb.FindSensors;
-import pl.edu.uj.okulo.windows.StatusPanel;
+import pl.edu.uj.okulo.windows.panels.StatusPanel;
 
 
 public class Engine {

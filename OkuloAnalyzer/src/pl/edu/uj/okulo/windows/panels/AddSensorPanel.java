@@ -1,4 +1,4 @@
-package pl.edu.uj.okulo.windows;
+package pl.edu.uj.okulo.windows.panels;
 
 import java.awt.Dimension;
 import java.awt.GridBagConstraints;
@@ -16,6 +16,7 @@ import javax.swing.JTextField;
 import pl.edu.uj.okulo.engine.Configuration;
 import pl.edu.uj.okulo.engine.SensorDescription;
 import pl.edu.uj.okulo.engine.Utilities;
+import pl.edu.uj.okulo.windows.AddSensorFrame;
 
 public class AddSensorPanel extends JPanel implements ActionListener {
 

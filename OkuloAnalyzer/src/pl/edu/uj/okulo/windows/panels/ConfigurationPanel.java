@@ -1,4 +1,4 @@
-package pl.edu.uj.okulo.windows;
+package pl.edu.uj.okulo.windows.panels;
 
 import java.awt.Dimension;
 import java.awt.GridBagConstraints;
@@ -6,6 +6,8 @@ import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.io.FileNotFoundException;
@@ -17,8 +19,10 @@ import javax.swing.JTextField;
 
 import pl.edu.uj.okulo.engine.Configuration;
 import pl.edu.uj.okulo.engine.Utilities;
+import pl.edu.uj.okulo.windows.ColorChooserFrame;
+import pl.edu.uj.okulo.windows.ConfigurationFrame;
 
-public class ConfigurationPane extends JPanel implements ActionListener, MouseListener {
+public class ConfigurationPanel extends JPanel implements ActionListener, MouseListener {
 
 	private static final long serialVersionUID = 1L;
 	private final String SAVE_ACTION = "saveConfiguration";
@@ -29,9 +33,10 @@ public class ConfigurationPane extends JPanel implements ActionListener, MouseLi
 	private ColorChooserFrame back, imp;
 	private JTextField sizeIn;
 	private ControlPanel control;
+	private PreviewPanel preview;
 	private ConfigurationFrame parent;
 
-	public ConfigurationPane(ConfigurationFrame p)
+	public ConfigurationPanel(ConfigurationFrame p)
 	{
 		super(new GridBagLayout());
 		parent = p;
@@ -40,8 +45,15 @@ public class ConfigurationPane extends JPanel implements ActionListener, MouseLi
 		impColor = new JLabel("               Kolor bodźca:");
 		impColor.setPreferredSize(new Dimension(10,100));
 		impSize = new JLabel("Średnica bodźca w px:");
+		preview = new PreviewPanel(Configuration.getConfiguration().getBackgroundColor(),
+				Configuration.getConfiguration().getImpulseColor(),
+				Configuration.getConfiguration().getImpSize());
+		
 		
 		Dimension d;
+		
+		preview.setOpaque(true);
+
 		
 		backColorBack = new JLabel(" ");
 		d = backColorBack.getPreferredSize();
@@ -61,11 +73,38 @@ public class ConfigurationPane extends JPanel implements ActionListener, MouseLi
 		d = sizeIn.getPreferredSize();
 		d.setSize(40, d.getHeight());
 		sizeIn.setPreferredSize(d);
+		sizeIn.addKeyListener(new KeyListener()
+		{
+
+			@Override
+			public void keyPressed(KeyEvent arg0) {}
+
+			@Override
+			public void keyReleased(KeyEvent arg0) {}
+
+			@Override
+			public void keyTyped(KeyEvent k) {
+				if((k.getKeyChar()<48 || k.getKeyChar()>57) && k.getKeyChar()!=8 && k.getKeyChar()!=127)
+				{
+					k.consume();
+				}
+				else
+				{
+					String number = sizeIn.getText()+k.getKeyChar();
+					if(Utilities.isInt(number))
+					{
+						preview.setImpSize(Integer.parseInt(number));
+						preview.repaint();
+					}
+				}
+			}
+			
+		});
 		
 		GridBagConstraints c = new GridBagConstraints();
         c.fill = GridBagConstraints.BOTH;
 		c.insets = new Insets(3, 5, 10, 5);
-		c.gridwidth = 2;
+		c.gridwidth = 4;
 		add(info, c);
 		c.insets = new Insets(3, 5, 3, 5);
 		c.gridwidth = 1;
@@ -93,6 +132,14 @@ public class ConfigurationPane extends JPanel implements ActionListener, MouseLi
 		c.insets = new Insets(10, 5, 3, 5);
 		add(control, c);
 		
+		c.insets = new Insets(0, 5, 0, 0);		
+		c.gridx = 2;
+		c.gridy = 0;
+		c.gridheight = 5;
+		c.ipadx = 140;
+		c.ipady = 40;
+		add(preview, c);
+		
 	}
 
 	@Override
@@ -102,6 +149,8 @@ public class ConfigurationPane extends JPanel implements ActionListener, MouseLi
 			if(a.getActionCommand().equals(MainPanel.ADD_ACTION))
 			{
 				this.backColorBack.setBackground(back.getSelectedColor());
+				this.preview.setBackgroundColor(back.getSelectedColor());
+				this.preview.repaint();
 			}
 			back.setVisible(false);
 			back = null;
@@ -111,6 +160,8 @@ public class ConfigurationPane extends JPanel implements ActionListener, MouseLi
 			if(a.getActionCommand().equals(MainPanel.ADD_ACTION))
 			{
 				this.impColorBack.setBackground(imp.getSelectedColor());
+				this.preview.setImpulse(imp.getSelectedColor());
+				this.preview.repaint();
 			}
 			imp.setVisible(false);
 			imp = null;			

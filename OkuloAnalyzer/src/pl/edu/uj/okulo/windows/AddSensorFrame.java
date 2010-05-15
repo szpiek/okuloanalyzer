@@ -2,6 +2,9 @@ package pl.edu.uj.okulo.windows;
 
 import javax.swing.JFrame;
 
+import pl.edu.uj.okulo.windows.panels.AddSensorPanel;
+import pl.edu.uj.okulo.windows.panels.MainPanel;
+
 public class AddSensorFrame extends JFrame {
 
 	private static final long serialVersionUID = 1L;

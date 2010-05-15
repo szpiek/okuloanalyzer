@@ -8,16 +8,19 @@ import javax.swing.JColorChooser;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
+import pl.edu.uj.okulo.windows.panels.ConfigurationPanel;
+import pl.edu.uj.okulo.windows.panels.ControlPanel;
+
 public class ColorChooserFrame extends JFrame {
 
 	private static final long serialVersionUID = 1L;
 	private int width = 450;
 	private int height = 400;
-	private ConfigurationPane parent;
+	private ConfigurationPanel parent;
 	private JColorChooser cChooser;
 	
 	
-	public ColorChooserFrame(ConfigurationPane p, Color color)
+	public ColorChooserFrame(ConfigurationPanel p, Color color)
 	{
 		super("Wybierz kolor");
 		parent = p;
