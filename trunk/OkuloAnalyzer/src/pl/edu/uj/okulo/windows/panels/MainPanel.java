@@ -25,20 +25,18 @@ import pl.edu.uj.okulo.engine.Configuration;
 import pl.edu.uj.okulo.engine.Engine;
 import pl.edu.uj.okulo.engine.SensorDescription;
 import pl.edu.uj.okulo.engine.Utilities;
-import pl.edu.uj.okulo.experiment.ExperimentConstants;
 import pl.edu.uj.okulo.log.OkLogger;
 import pl.edu.uj.okulo.windows.AddSensorFrame;
 import pl.edu.uj.okulo.windows.CalibrationFrame;
-import pl.edu.uj.okulo.windows.ConfigurationFrame;
 import pl.edu.uj.okulo.windows.ExperimentFrame;
 
 public class MainPanel extends JPanel implements ActionListener{
 
 	private static final long serialVersionUID = 1L;
-	protected JButton addSensor, removeSensor, sensors, calibration, configuration, experiment;
+	protected JButton addSensor, removeSensor, sensors, calibration, experiment;
 	protected JProgressBar progress;
-	protected JComboBox sensorsList, experimentList;
-	protected JFrame mainFrame, addSensorFrame, configurationFrame, experimentFrame;
+	protected JComboBox sensorsList;
+	protected JFrame mainFrame, addSensorFrame, experimentFrame;
 	protected SensorsPanel sensorsPane1, sensorsPane2;
 	
 	public static final String FIND_SENSORS_ACTION = "findSensors";
@@ -46,7 +44,6 @@ public class MainPanel extends JPanel implements ActionListener{
 	public static final String RUN_CALIBRATION_ACTION = "calibrate";
 	public static final String ADD_SENSOR_ACTION = "addSensor";
 	public static final String REMOVE_SENSOR_ACTION = "removeSensor";
-	public static final String CONFIGURE_ACTION = "configure";
 	public static final String EXPERIMENT_ACTION = "experiment";
 	
 	private static final String FIND_SENSORS_BUTTON = "Znajdź sensory";
@@ -65,12 +62,10 @@ public class MainPanel extends JPanel implements ActionListener{
         calibration = this.prepareButton("Kalibruj", MainPanel.RUN_CALIBRATION_ACTION);
         addSensor = this.prepareButton("Dodaj sensor", MainPanel.ADD_SENSOR_ACTION);
         removeSensor = this.prepareButton("Usuń sensor", MainPanel.REMOVE_SENSOR_ACTION);
-        configuration = this.prepareButton("Konfiguruj", MainPanel.CONFIGURE_ACTION);
         experiment = this.prepareButton("Eksperyment", MainPanel.EXPERIMENT_ACTION);
         
         sensors.addActionListener(this);
         calibration.addActionListener(this);
-        configuration.addActionListener(this);
         addSensor.addActionListener(this);
         removeSensor.addActionListener(this);
         experiment.addActionListener(this);
@@ -80,7 +75,6 @@ public class MainPanel extends JPanel implements ActionListener{
         progress = new JProgressBar(); 
         
         sensorsList = new JComboBox(Configuration.getConfiguration().getSensorsNames());
-        experimentList = new JComboBox(ExperimentConstants.getExperiments());
         
         this.mainFrame = frame;
         
@@ -113,19 +107,16 @@ public class MainPanel extends JPanel implements ActionListener{
         c.insets = new Insets(25, 5, 5, 5);
         add(calibration, c);
         c.gridx = 1;
-        add(configuration, c);
+        add(experiment, c);
         d = sensorsList.getPreferredSize();
         d.width = 145;
         sensorsList.setPreferredSize(d);
         c.insets = new Insets(5, 5, 5, 5);
         
         c.gridy = 4;
-        add(experimentList, c);
         c.gridx = 0;
-        add(experiment,c);
         
         // sensors panel
-        c.gridy = 5;
         c.gridheight = 2;
         sensorsPane1 = new SensorsPanel("Sensor 1");
         sensorsPane2 = new SensorsPanel("Sensor 2");
@@ -234,10 +225,6 @@ public class MainPanel extends JPanel implements ActionListener{
 		{
 			new CalibrationFrame().setVisible(true);
 		}
-		else if(e.getActionCommand().equals(MainPanel.CONFIGURE_ACTION))
-		{
-			this.showConfigurationWindow();
-		}
 		else if(e.getActionCommand().equals(MainPanel.EXPERIMENT_ACTION))
 		{
 			if(experimentFrame==null)
@@ -255,7 +242,7 @@ public class MainPanel extends JPanel implements ActionListener{
 		this.progress.setIndeterminate(false);
 		if(found>0)
 		{
-			Engine.getInstance().runSensors(this.sensorsPane1.getStatusStan(), this.sensorsPane1.getStatusOdczyt());
+			Engine.getInstance().runTempSensors(this.sensorsPane1.getStatusStan(), this.sensorsPane1.getStatusOdczyt());
 			this.sensorsList.setEnabled(false);
 			this.sensors.setText("Odłącz sensory");
 			this.sensors.setActionCommand(DISCONNECT_SENSORS);
@@ -274,17 +261,6 @@ public class MainPanel extends JPanel implements ActionListener{
         b.setHorizontalTextPosition(AbstractButton.LEADING);
         b.setActionCommand(action);
         return b;
-	}
-	
-	public void showConfigurationWindow()
-	{
-		if(configurationFrame!=null && configurationFrame.isVisible())
-			configurationFrame.toFront();
-		else
-		{
-			configurationFrame = new ConfigurationFrame();
-			configurationFrame.setVisible(true);
-		}
 	}
 	
 	public JComboBox getSensorsList()

@@ -21,9 +21,10 @@ public class Engine {
 	private static Engine singleton = null;
 	private final int sensorsAmount = 1;
 	private ArrayList<UsbInterface> sensors = new ArrayList<UsbInterface>();
-	private SensorThread sensor1, sensor2;
+	private SensorStatusThread sensor1, sensor2;
 	
-	private final String fileTemplate = "tempData_";
+	private File targetDir = null;
+
 	
 	private Engine(){}
 	
@@ -49,12 +50,12 @@ public class Engine {
 		return false;
 	}
 	
-	public void runSensors(StatusPanel ... statuses)
+	public void runTempSensors(StatusPanel ... statuses)
 	{
-		sensor1 = new SensorThread(sensors.get(0),statuses[0], statuses[1], singleton.getTempDataFile());
+		sensor1 = new SensorStatusThread(sensors.get(0),statuses[0], statuses[1], singleton.getTempDataFile());
 		if(statuses.length>2)
 		{
-			sensor2 = new SensorThread(sensors.get(1),statuses[2],statuses[3], singleton.getTempDataFile());
+			sensor2 = new SensorStatusThread(sensors.get(1),statuses[2],statuses[3], singleton.getTempDataFile());
 		}
 		sensor1.start();
 	}
@@ -90,6 +91,16 @@ public class Engine {
 		{
 			sensor1.setAllBlack();
 		}
+	}
+	
+	public void setTargetDir(File dir)
+	{
+		this.targetDir = dir;
+	}
+	
+	public File getTargetDir()
+	{
+		return this.getTargetDir();
 	}
 
 }

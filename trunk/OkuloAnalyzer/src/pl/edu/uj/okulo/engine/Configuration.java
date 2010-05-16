@@ -205,7 +205,7 @@ public class Configuration {
 	
 	public int getWidthPosition(int id)
 	{
-		return (this.frameWidth/maxImpulses)*(id-1)+getImpSize();
+		return (this.frameWidth/maxImpulses)*(id-1)+((this.frameWidth/maxImpulses)/2);
 	}
 	
 }

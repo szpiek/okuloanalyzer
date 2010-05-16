@@ -16,7 +16,7 @@ import javax.usb.UsbPipe;
 import pl.edu.uj.okulo.log.OkLogger;
 import pl.edu.uj.okulo.windows.panels.StatusPanel;
 
-public class SensorThread extends Thread {
+public class SensorStatusThread extends Thread {
 	
 	StatusPanel status, odczyt;
 	UsbInterface sensor;
@@ -25,7 +25,7 @@ public class SensorThread extends Thread {
 	public static final long SLEEP_READ_STATUS = 2000;
 	private FileOutputStream dataFile;
 
-	public SensorThread(UsbInterface usb, StatusPanel st, StatusPanel od, File f)
+	public SensorStatusThread(UsbInterface usb, StatusPanel st, StatusPanel od, File f)
 	{
 		this.sensor = usb;
 		this.status = st;
@@ -230,7 +230,6 @@ public class SensorThread extends Thread {
 			this.status = stat;
 		}
 		
-		@SuppressWarnings("deprecation")
 		public void stopThread()
 		{
 			try {
@@ -238,7 +237,7 @@ public class SensorThread extends Thread {
 			} catch (IOException e) {
 				OkLogger.error(e.getMessage());
 			}
-			this.stop();
+			this.interrupt();
 		}
 		
 	}
