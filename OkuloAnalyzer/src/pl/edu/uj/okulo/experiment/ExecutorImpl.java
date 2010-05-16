@@ -26,7 +26,7 @@ public class ExecutorImpl implements Executor {
 					Configuration.getConfiguration().getHeightPosition(),
 					Configuration.getConfiguration().getImpSize(), 
 					Configuration.getConfiguration().getImpSize());
-			OkLogger.info("Rysuje: "+id);
+//			OkLogger.info("Rysuje: "+id);
 		}
 		else if(action.equals(CLEAN))
 		{
@@ -35,7 +35,7 @@ public class ExecutorImpl implements Executor {
 					Configuration.getConfiguration().getHeightPosition(),
 					Configuration.getConfiguration().getImpSize(), 
 					Configuration.getConfiguration().getImpSize());			
-			OkLogger.info("Zmazuje: "+id);
+//			OkLogger.info("Zmazuje: "+id);
 		}
 		if(exec!=null)
 			exec.execute(g);

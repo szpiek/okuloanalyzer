@@ -16,7 +16,7 @@ public class MainFrame extends JFrame {
 
 	private static final long serialVersionUID = 1L;
 	private int width = 350;
-	private int height = 320;
+	private int height = 290;
 
 	private static int left = 100;
 	private static int top = 100;

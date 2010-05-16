@@ -17,25 +17,31 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
+import javax.swing.plaf.basic.BasicInternalFrameTitlePane.MaximizeAction;
 
 import pl.edu.uj.okulo.engine.Utilities;
 import pl.edu.uj.okulo.experiment.ExperimentManager;
+import pl.edu.uj.okulo.windows.ConfigurationFrame;
+import pl.edu.uj.okulo.windows.ExperimentRunFrame;
 import pl.edu.uj.okulo.windows.PreviewFrame;
 
 public class ExperimentPanel extends JPanel implements ActionListener{
 
 	private static final long serialVersionUID = 1L;
-	private JButton newExp, preview, open, save, run;
+	private JButton newExp, preview, open, save, run, config;
 	private JTextField nameText, descriptionText;
 	private JTextArea definitionArea;
 	private JFrame parent;
 	private PreviewFrame previewFrame;
+	private ConfigurationFrame configurationFrame;
+	private ExperimentRunFrame expFrame;
 	
 	private final String NEW_ACTION = "newExp";
 	private final String SAVE_ACTION = "save";	
 	private final String OPEN_ACTION = "open";
 	private final String PREVIEW_ACTION = "preview";
 	private final String RUN_ACTION = "run";	
+	private final String CONFIGURATION_ACTION = "config";
 	
 	public ExperimentPanel(JFrame p)
 	{
@@ -51,18 +57,21 @@ public class ExperimentPanel extends JPanel implements ActionListener{
 		open = new JButton("Wczytaj");
 		save = new JButton("Zapisz");
 		run = new JButton("Uruchom");
+		config = new JButton("Konfiguracja");
 		
 		newExp.setActionCommand(NEW_ACTION);
 		preview.setActionCommand(PREVIEW_ACTION);
 		open.setActionCommand(OPEN_ACTION);
 		save.setActionCommand(SAVE_ACTION);
 		run.setActionCommand(RUN_ACTION);
+		config.setActionCommand(CONFIGURATION_ACTION);
 		
 		newExp.addActionListener(this);
 		preview.addActionListener(this);
 		open.addActionListener(this);
 		save.addActionListener(this);
 		run.addActionListener(this);
+		config.addActionListener(this);
 		
 		nameText = new JTextField();
 		descriptionText = new JTextField();
@@ -83,33 +92,38 @@ public class ExperimentPanel extends JPanel implements ActionListener{
 		c.gridx = 1;
 		add(open, c);
 		c.gridx = 2;
-		add(save, c);
+		add(config, c);
 		c.gridx = 3;
-		add(preview, c);
-		c.gridx = 4;
-		add(run, c);
+		add(save, c);
 		c.gridy = 1;
 		c.gridx = 0;
-		add(nameLabel, c);
+		add(preview, c);
 		c.gridx = 1;
-		c.gridwidth = 4;
-		add(nameText, c);
+		c.gridwidth = 3;
+		add(run, c);
 		c.gridwidth = 1;
 		c.gridy = 2;
 		c.gridx = 0;
+		add(nameLabel, c);
+		c.gridx = 1;
+		c.gridwidth = 3;
+		add(nameText, c);
+		c.gridwidth = 1;
+		c.gridy = 3;
+		c.gridx = 0;
 		add(description, c);
 		c.gridx = 1;
-		c.gridwidth = 4;
+		c.gridwidth = 3;
 		add(descriptionText, c);
-		c.gridwidth = 5;
+		c.gridwidth = 4;
 		c.gridx = 0;
-		c.gridy = 3;
+		c.gridy = 4;
 		c.insets = new Insets(5, 145, 5, 5);
 		add(definition, c);
-		c.gridy = 4;
-		c.insets = new Insets(5, 13, 3, 3);
-		add(info, c);
 		c.gridy = 5;
+		c.insets = new Insets(5, 3, 3, 3);
+		add(info, c);
+		c.gridy = 6;
 		c.insets = new Insets(5, 3, 3, 3);
 		c.ipady = 138;
 		add(scrollpane, c);
@@ -187,8 +201,34 @@ public class ExperimentPanel extends JPanel implements ActionListener{
 			previewFrame.setVisible(true);
 			previewFrame.startPreview();
 		}
+		else if(a.getActionCommand().equals(CONFIGURATION_ACTION))
+		{
+			this.showConfigurationWindow();
+		}
+		else if(a.getActionCommand().equals(RUN_ACTION))
+		{
+			ExperimentManager.getManager().prepareTimeLine(this.definitionArea.getText());
+			this.runExperiment();
+		}
 	}
 	
+	private void runExperiment() {
+		if(expFrame!=null && expFrame.isVisible())
+			expFrame.setVisible(false);
+		expFrame = new ExperimentRunFrame(this.nameText.getText().trim());
+	    expFrame.setExtendedState(JFrame.MAXIMIZED_BOTH);  //Maximizing the frame
+	    expFrame.setExtendedState(JFrame.ICONIFIED | expFrame.getExtendedState());
+	    expFrame.setVisible(true);
+	    try {
+			Thread.sleep(10);
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+	    expFrame.setResizable(false);
+	    expFrame.setPaneSize();
+	}
+
+
 	private boolean checkAll() {
 		if(nameText.getText().trim().isEmpty() || 
 				descriptionText.getText().trim().isEmpty() || 
@@ -209,5 +249,16 @@ public class ExperimentPanel extends JPanel implements ActionListener{
 		descriptionText.setEnabled(enabled);
 		definitionArea.setEnabled(enabled);		
 		run.setEnabled(enabled);
-	}	
+	}
+	
+	private void showConfigurationWindow()
+	{
+		if(configurationFrame!=null && configurationFrame.isVisible())
+			configurationFrame.toFront();
+		else
+		{
+			configurationFrame = new ConfigurationFrame();
+			configurationFrame.setVisible(true);
+		}
+	}
 }
