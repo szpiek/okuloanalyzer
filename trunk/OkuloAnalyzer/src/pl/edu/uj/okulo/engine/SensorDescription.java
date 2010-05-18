@@ -5,11 +5,14 @@ import pl.edu.uj.okulo.log.OkLogger;
 public class SensorDescription {
 
 	public static final String SENSOR_CONFIG_SEPARATOR = ":";
+	public static final short LEFT = 0;
+	public static final short RIGHT = 1;
 	
 	private String name = "";
 	private short vendorId = 0;
 	private short productId = 0;
 	private int dpi = 0;
+	private short position;
 	
 	public SensorDescription(String config)
 	{
@@ -55,5 +58,10 @@ public class SensorDescription {
 
 	public Integer getDpi() {
 		return dpi;
+	}
+	
+	public short getPosition()
+	{
+		return this.position;
 	}
 }	

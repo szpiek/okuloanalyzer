@@ -3,7 +3,7 @@ package pl.edu.uj.okulo.experiment;
 import java.awt.Graphics;
 
 import pl.edu.uj.okulo.engine.Configuration;
-import pl.edu.uj.okulo.log.OkLogger;
+import pl.edu.uj.okulo.engine.Engine;
 
 public class ExecutorImpl implements Executor {
 
@@ -26,6 +26,7 @@ public class ExecutorImpl implements Executor {
 					Configuration.getConfiguration().getHeightPosition(),
 					Configuration.getConfiguration().getImpSize(), 
 					Configuration.getConfiguration().getImpSize());
+			Engine.getInstance().setImpulse(id, true);
 //			OkLogger.info("Rysuje: "+id);
 		}
 		else if(action.equals(CLEAN))
@@ -34,7 +35,8 @@ public class ExecutorImpl implements Executor {
 			g.fillOval(Configuration.getConfiguration().getWidthPosition(id), 
 					Configuration.getConfiguration().getHeightPosition(),
 					Configuration.getConfiguration().getImpSize(), 
-					Configuration.getConfiguration().getImpSize());			
+					Configuration.getConfiguration().getImpSize());	
+			Engine.getInstance().setImpulse(id, false);
 //			OkLogger.info("Zmazuje: "+id);
 		}
 		if(exec!=null)

@@ -20,6 +20,7 @@ public class Configuration {
 	private Color colorBackground = null;
 	public final static String CONFIG_FILENAME = "config.ini";
 	public final static String SENSOR_SEPARATOR = ";";
+	public final static int maxImpulses = 5;
 	
 	private final String SENSORS_CONFIG_KEY = "sensors";
 	private final String MWIDTH_CONFIG_KEY = "mWidth";
@@ -31,7 +32,6 @@ public class Configuration {
 	private Properties configFile = null;
 	private int frameHeight = 0;
 	private int frameWidth = 0;
-	private final int maxImpulses = 5;
 	private final int PREVIEW_IMPULSE=30;
 	private final Color DEFAULT_COLOR_IMPULS = Color.black;
 	private final Color DEFAULT_COLOR_BACKGROUND = Color.white;
