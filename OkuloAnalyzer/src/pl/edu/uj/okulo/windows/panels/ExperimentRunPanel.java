@@ -15,6 +15,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
 import pl.edu.uj.okulo.engine.Configuration;
+import pl.edu.uj.okulo.engine.Engine;
 import pl.edu.uj.okulo.experiment.ExperimentDrawThread;
 import pl.edu.uj.okulo.experiment.ExperimentManager;
 import pl.edu.uj.okulo.experiment.ThreadListener;
@@ -101,6 +102,8 @@ public class ExperimentRunPanel extends JPanel implements ActionListener, Thread
 				experimentThread.setPause(false);
 				experimentThread.awake();
 				pause.setEnabled(true);
+				if(this.targetDir!=null)
+					Engine.getInstance().pauseExperiment(false);
 			}
 			else
 			{
@@ -117,6 +120,8 @@ public class ExperimentRunPanel extends JPanel implements ActionListener, Thread
 				}
 				else
 				{
+					Engine.getInstance().prepareExpFiles(targetDir);
+					Engine.getInstance().startExperiment();
 					showExperiment();
 					setAllEnabled(true);
 				}
@@ -134,6 +139,7 @@ public class ExperimentRunPanel extends JPanel implements ActionListener, Thread
 				pause.setEnabled(false);
 				experimentThread.setPause(true);
 			}
+			Engine.getInstance().pauseExperiment(true);
 		}
 	}
 	
@@ -149,6 +155,7 @@ public class ExperimentRunPanel extends JPanel implements ActionListener, Thread
 	{
 		if(experimentThread!=null)
 			experimentThread.interrupt();
+		Engine.getInstance().stopExperiment();
 	}
 
 	private void setAllEnabled(boolean b)
@@ -160,6 +167,7 @@ public class ExperimentRunPanel extends JPanel implements ActionListener, Thread
 	@Override
 	public void stopThread() {
 		setAllEnabled(false);
+		Engine.getInstance().stopExperiment();
 	}
 
 }

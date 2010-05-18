@@ -17,7 +17,6 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
-import javax.swing.plaf.basic.BasicInternalFrameTitlePane.MaximizeAction;
 
 import pl.edu.uj.okulo.engine.Utilities;
 import pl.edu.uj.okulo.experiment.ExperimentManager;
