@@ -1,10 +1,9 @@
 import javax.usb.UsbException;
 
-import pl.edu.uj.okulo.usb.FindSensors;
 import pl.edu.uj.okulo.windows.MainFrame;
 
 
-public class Test {
+public class Main {
 
 	/**
 	 * @param args
