@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<project basedir="." default="app" name="OkuloAnalyzer">
+	
+	<property file="./build.properties" />
+	
+	<property name="debuglevel" value="source,lines,vars" />
+	<property name="target" value="1.5" />
+	<property name="source" value="1.5" />
+	
+	<path id="Classpath">
+		<pathelement location="bin" />
+		<pathelement location="${lib.location}/jsr80_linux.jar" />
+		<pathelement location="${lib.location}/jsr80_ri.jar" />
+		<pathelement location="${lib.location}/jsr80.jar" />
+		<pathelement location="${lib.location}/log4j-1.2.15.jar" />
+	</path>
+	
+	<target name="init">
+		<tstamp />
+		<echo message="${ant.project.name}: ${ant.file}" />
+		<mkdir dir="bin" />
+		<mkdir dir="app" />
+	</target>
+	
+	<target name="clean">
+		<delete dir="bin" />
+		<delete dir="app" />
+	</target>
+		
+	<target depends="init" name="compile">
+		<javac debug="true" debuglevel="${debuglevel}" destdir="bin" source="${source}" target="${target}">
+			<src path="src" />
+			<classpath refid="Classpath" />
+		</javac>
+		<copy includeemptydirs="true" todir="bin">
+			<fileset dir="src">
+			  <include name="*.properties"/>
+			</fileset>
+		</copy>
+	</target>
+	
+	<target depends="compile" name="app">
+		<fileset dir="${server.src}" casesensitive="yes">
+		  <include name="**/*.java"/>
+		  <exclude name="**/*Test*"/>
+		</fileset>
+
+		<jar destfile="${app.location}/OkuloAnalyzer.jar" basedir="bin" />
+		<copy includeemptydirs="true" todir="${app.location}/${lib.location}">
+			<fileset dir="${lib.location}" />
+			<fileset file="libJavaxUsb.so" />
+		</copy>
+		<copy includeemptydirs="true" todir="app">
+			<fileset file="okulo.sh" />
+		</copy>
+		<copy includeemptydirs="true" todir="app">
+			<fileset file="config.ini" />
+			<fileset dir=".">
+			  <include name="*.gif"/>
+			</fileset>
+		</copy>
+		<chmod perm="+x">
+			<fileset file="app/okulo.sh"/>
+		</chmod>
+	</target>	
+
+	<target depends="app" name="gzipAll">
+		<tar destfile="${app.location}/OkuloAnalyzer.tar" basedir="${app.location}"/>
+		<gzip destfile="${app.location}/OkuloAnalyzer.tar.gz" src="${app.location}/OkuloAnalyzer.tar"/>
+	</target>	
+	
+</project>
