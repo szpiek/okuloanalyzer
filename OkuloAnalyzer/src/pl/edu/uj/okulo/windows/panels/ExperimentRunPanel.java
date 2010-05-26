@@ -16,6 +16,7 @@ import javax.swing.JPanel;
 
 import pl.edu.uj.okulo.engine.Configuration;
 import pl.edu.uj.okulo.engine.Engine;
+import pl.edu.uj.okulo.engine.Utilities;
 import pl.edu.uj.okulo.experiment.ExperimentDrawThread;
 import pl.edu.uj.okulo.experiment.ExperimentManager;
 import pl.edu.uj.okulo.experiment.ThreadListener;
@@ -168,6 +169,7 @@ public class ExperimentRunPanel extends JPanel implements ActionListener, Thread
 	public void stopThread() {
 		setAllEnabled(false);
 		Engine.getInstance().stopExperiment();
+		JOptionPane.showInternalMessageDialog(this, "Zakończono eksperyment", "Informacja", JOptionPane.INFORMATION_MESSAGE);
 	}
 
 }
