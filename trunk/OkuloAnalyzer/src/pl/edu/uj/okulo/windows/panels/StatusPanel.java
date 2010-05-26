@@ -9,6 +9,7 @@ public class StatusPanel extends JPanel {
 
 	private static final long serialVersionUID = 1L;
 	private Color c = Color.BLACK;
+	private boolean block = false;
 
 	public void paintComponent(Graphics g)
 	{
@@ -16,26 +17,34 @@ public class StatusPanel extends JPanel {
 		g.fillRect(15, 7, 10, 10);
 	}
 
-	public void setGreen() {
-		this.c = Color.GREEN;
-		this.repaint();
+	public synchronized void setGreen() {
+		if(!block)
+		{
+			this.c = Color.GREEN;
+			this.repaint();
+		}
 	}
 	
-	public void setBlack()
+	public synchronized  void setBlack()
 	{
 		this.c = Color.black;
 		this.repaint();
+		block = false;
 	}
 	
-	public void setDarkGreen()
+	public synchronized  void setDarkGreen()
 	{
-		this.c = new Color(0,128,0);
-		this.repaint();
+		if(!block)
+		{
+			this.c = new Color(0,128,0);
+			this.repaint();
+		}
 	}
 	
-	public void setRed()
+	public synchronized void setRed()
 	{
 		this.c = Color.red;
 		this.repaint();
+		block = true;
 	}
 }

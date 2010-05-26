@@ -131,6 +131,7 @@ public class MainPanel extends JPanel implements ActionListener{
 		{
 			progress.setIndeterminate(true);
 			sensors.setEnabled(false);
+			removeSensor.setEnabled(false);
 			Thread t = new Thread(
 					new Runnable()
 					{
@@ -179,6 +180,7 @@ public class MainPanel extends JPanel implements ActionListener{
 						sensorsList.setEnabled(true);
 						progress.setIndeterminate(false);
 						sensors.setEnabled(true);
+						removeSensor.setEnabled(true);
 					}
 					sensors.setText(MainPanel.FIND_SENSORS_BUTTON);
 					sensors.setActionCommand(FIND_SENSORS_ACTION);

@@ -15,7 +15,6 @@ public class Main {
 	public static void main(String[] args) throws SecurityException, UsbException {	
 		MainFrame f = new MainFrame();
 		f.setVisible(true);
-//		FindSensors.getSensors();
 	}
 
 }

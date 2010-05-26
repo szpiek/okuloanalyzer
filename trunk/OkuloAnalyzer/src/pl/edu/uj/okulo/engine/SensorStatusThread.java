@@ -96,32 +96,7 @@ public class SensorStatusThread extends Thread {
 	}
 	
 	public void run()
-	{
-		Thread t = new Thread(new Runnable()
-		{
-			public void run()
-			{
-				while(run)
-				{
-					if(sensor.isClaimed() && sensor.isActive() && !isDisconnected())
-					{
-						OkLogger.info("disc: "+isDisconnected());
-						status.setGreen();
-					}
-					else
-					{
-						status.setRed();
-					}
-					try {
-						Thread.sleep(SLEEP_STATUS);
-					} catch (InterruptedException e) {
-						OkLogger.info("Błąd w wątku sprawdzającym status sensora! "+e.getMessage());
-					}
-				}
-			}
-		});
-		t.start();
-		
+	{	
 		UsbPipe pipe = Utilities.getPipeForUsbInterface(sensor);
 		if(pipe==null)
 		{
@@ -138,13 +113,20 @@ public class SensorStatusThread extends Thread {
 		sensorRead.start();
 		while(run)
 		{
-//			OkLogger.info("Dlugosc wyslanych danych: "+sensorRead.getStatus());
 			if(sensorRead.getStatus()==0 && !isDisconnected())
 			{
-//				OkLogger.info("Ustawiam odczyt");
 				odczyt.setDarkGreen();
 			}
 			sensorRead.setStatus(0);
+			if(sensor.isClaimed() && sensor.isActive() && !isDisconnected())
+			{
+				OkLogger.info("disc: "+isDisconnected());
+				status.setGreen();
+			}
+			else
+			{
+				status.setRed();
+			}
 			try {
 				Thread.sleep(SLEEP_READ_STATUS);
 			} catch (InterruptedException e1) {
@@ -158,8 +140,7 @@ public class SensorStatusThread extends Thread {
 			pipe.abortAllSubmissions();
 			pipe.close();
 		} catch (UsbException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
+			OkLogger.error(e1.getMessage());
 		}
 	}
 	
@@ -217,7 +198,7 @@ public class SensorStatusThread extends Thread {
 				try {
 					getDataFile().write(output.getBytes());
 				} catch (IOException e) {
-					OkLogger.error(e.getMessage());
+					error(e);
 				}
 				if(status>0 && !isDisconnected())
 					setOdczytGreen();
@@ -228,7 +209,7 @@ public class SensorStatusThread extends Thread {
 							this.wait();
 						}
 					} catch (InterruptedException e) {
-						OkLogger.info(e.getMessage());
+						error(e);
 					}
 			}
 		}

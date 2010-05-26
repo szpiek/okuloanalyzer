@@ -41,23 +41,22 @@ public class ExperimentDrawThread extends Thread {
 	public void run()
 	{
 		int start = 1000;
+		int timePassed = 0;
 		for(ExecutorAction a : allEvents)
 		{
 			try {
-				Thread.sleep(start+a.getTime());
+				Thread.sleep(start+a.getTime()-timePassed);
 			} catch (InterruptedException e) {
 				OkLogger.error(e.getMessage());
 			}
 			if(this.pause)
 			{
 				try {
-					OkLogger.info("czekamy...");
 					stopPause = System.currentTimeMillis();
 					synchronized(this)
 					{
 						this.wait();
 					}
-					OkLogger.info((stopPause - startPause));
 					sleep(stopPause - startPause);
 				} catch (InterruptedException e) {
 					OkLogger.error(e.getMessage());
@@ -65,6 +64,9 @@ public class ExperimentDrawThread extends Thread {
 			}
 			if(start==1000)
 				start = 0;
+			timePassed += a.getTime()-timePassed;
+			OkLogger.info("Time::: "+a.getTime());
+			OkLogger.info("Time::: "+timePassed);
 			a.getAction().execute(canvas.getGraphics());
 		}
 		if(tListener!=null)

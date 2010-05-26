@@ -62,6 +62,7 @@ public class Engine {
 		if(statuses.length>2)
 		{
 			sensor2 = new SensorStatusThread(sensors.get(1),statuses[2],statuses[3], getTempDataFile());
+			sensor2.start();
 		}
 		sensor1.start();
 	}
